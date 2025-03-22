@@ -90,6 +90,10 @@ if File.exist?("#{binary}.gz") && !File.exist?(binary)
   File.open binary, 'wb', 0o755 do |file|
     Zlib::GzipReader.open("#{binary}.gz") { |gzip| file << gzip.read }
   end
+  # delete other files
+  Dir.glob("#{__FILE__}_*.gz").each do |file|
+    File.delete(file) unless file == "#{binary}.gz"
+  end
 end
 
 unless File.exist? binary
